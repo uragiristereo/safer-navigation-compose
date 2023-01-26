@@ -1,4 +1,4 @@
-## Safer Compose Navigation
+## Safer Jetpack Compose Navigation Extension
 
 Type-safe extension library for the official Jetpack Compose Navigation library with `Serializable` data classes support.
 
@@ -8,7 +8,7 @@ Type-safe extension library for the official Jetpack Compose Navigation library 
 - Easy migration path, you only need to modify several lines to get started.
 - Every features from the official library are still available, like nested navigation graph, deep links, etc.
 - Accompanist Navigation Animation supported in a separate artifact.
-- No annotation processor like **kapt** or **KSP** required. <b>**</b>
+- No annotation processor like **kapt** or **KSP** required<b>**</b>.
 - Based on `Kotlinx.Serialization` plugin.
 
 ### Setup
@@ -41,17 +41,17 @@ dependencies {
     def safer_navigation_ver = "1.0.0"
     
     // Core library
-    implementation("com.github.uragiristereo.safer.compose.navigation:core:$safer_navigation_ver")
+    implementation("com.github.uragiristereo.safer.navigation.compose:core:$safer_navigation_ver")
 
     // Kotlinx.Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:<version>")
 
     // NOTE: You only need to add ONE of these that your project currently use to avoid wrong extension import
     // Navigation Compose support
-    implementation("com.github.uragiristereo.safer.compose.navigation:navigation-compose:$safer_navigation_ver")
+    implementation("com.github.uragiristereo.safer.navigation.compose:navigation-compose:$safer_navigation_ver")
 
     // Accompanist Navigation Animation support
-    implementation("com.github.uragiristereo.safer.compose.navigation:navigation-animation:$safer_navigation_ver")
+    implementation("com.github.uragiristereo.safer.navigation.compose:navigation-animation:$safer_navigation_ver")
 }
 ```
 
