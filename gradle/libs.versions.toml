@@ -1,0 +1,21 @@
+[versions]
+gradle = "7.4.0"
+kotlin = "1.7.21"
+compose = "1.4.0-alpha03"
+compose_compiler = "1.4.0-alpha02"
+navigation = "2.5.3"
+accompanist = "0.28.0"
+maven_publish = "0.23.2"
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish.base", version.ref = "maven-publish" }
+
+[libraries]
+compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.4.1" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }

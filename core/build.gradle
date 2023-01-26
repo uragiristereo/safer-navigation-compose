@@ -1,0 +1,56 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.noarg)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.maven.publish)
+}
+
+android {
+    namespace "com.github.uragiristereo.safer.compose.navigation.core"
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 21
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+noArg {
+    annotation("com.github.uragiristereo.safer.compose.navigation.core.NoArg")
+    invokeInitializers true
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = "com.github.uragiristereo.safer.compose.navigation"
+            artifactId = "core"
+            version = "1.0.0"
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
+
+
+dependencies {
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+}
