@@ -2,13 +2,13 @@ package com.github.uragiristereo.safer.compose.navigation.core
 
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import timber.log.Timber
 
 object Serializer {
     private val navRoutes = mutableMapOf<String, PolymorphicModuleBuilder<NavRoute>.() -> Unit>()
@@ -53,7 +53,7 @@ object Serializer {
 
             json.decodeFromString(decoded)
         } catch (e: IllegalArgumentException) {
-            Timber.w(e.message)
+            Log.w("SaferComposeNavigation", e)
 
             null
         }

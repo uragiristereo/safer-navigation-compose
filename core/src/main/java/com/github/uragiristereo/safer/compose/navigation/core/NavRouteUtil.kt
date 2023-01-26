@@ -1,7 +1,7 @@
 package com.github.uragiristereo.safer.compose.navigation.core
 
+import android.util.Log
 import androidx.navigation.NavBackStackEntry
-import timber.log.Timber
 
 object NavRouteUtil {
     inline fun <reified T> getDataOrNull(
@@ -12,7 +12,7 @@ object NavRouteUtil {
             null -> {
                 val e = IllegalArgumentException("Expecting navigation route data for \"${route.route}\" but got null!")
 
-                Timber.w(e.message)
+                Log.w("SaferComposeNavigation", e)
 
                 null
             }

@@ -1,5 +1,6 @@
 package com.github.uragiristereo.safer.compose.navigation.core
 
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDestination
@@ -8,7 +9,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigator
 import androidx.navigation.navOptions
-import timber.log.Timber
 
 fun NavHostController.navigate(
     route: NavRoute,
@@ -34,7 +34,7 @@ fun NavHostController.navigate(
         // When the data is too large it usually throws IllegalArgumentException "Navigation destination that matches request cannot be found"
         // So we're printing the error instead
 
-        Timber.e(e.message)
+        Log.e("SaferComposeNavigation", e.message.toString())
     }
 }
 
