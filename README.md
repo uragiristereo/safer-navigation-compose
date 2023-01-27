@@ -240,7 +240,7 @@ sealed interface MainRoute : NavRoute {
         val id: Int,
     ) : NavRoute {
         // Important to add .routeWithData() after the route if it's a data class
-        override val route: String = "thread".routeWithData()
+        override val route: String = "post".routeWithData()
     }
 }
 ```
