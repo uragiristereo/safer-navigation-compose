@@ -34,7 +34,7 @@ publishing {
         release(MavenPublication) {
             groupId = "com.github.uragiristereo.safer.compose.navigation"
             artifactId = "navigation-animation"
-            version = "1.0.0"
+            version = libs.versions.library.get()
 
             afterEvaluate {
                 from components.release
@@ -44,7 +44,7 @@ publishing {
 }
 
 dependencies {
-    implementation implementation(project(':core',))
+    implementation(project(":core"))
     implementation(libs.compose.animation)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.kotlinx.serialization.json)

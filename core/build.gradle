@@ -40,7 +40,7 @@ publishing {
         release(MavenPublication) {
             groupId = "com.github.uragiristereo.safer.compose.navigation"
             artifactId = "core"
-            version = "1.0.0"
+            version = libs.versions.library.get()
 
             afterEvaluate {
                 from components.release
