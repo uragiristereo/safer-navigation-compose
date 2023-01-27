@@ -42,7 +42,7 @@ plugins {
 // ...
 
 dependencies {
-    def safer_navigation_ver = "1.0.0"
+    def safer_navigation_ver = "1.0.1"
     
     // Core library
     implementation("com.github.uragiristereo.safer.navigation.compose:core:$safer_navigation_ver")
