@@ -91,11 +91,22 @@ fun MainNavGraph(modifier: Modifier = Modifier) {
     val mainNavController = rememberNavController()
     
     NavHost(
+        navController = mainNavController,
         startDestination = MainRoute.Home,
         modifier = modifier
     ) {
         composable(route = MainRoute.Home) {
-            HomeScreen()
+            HomeScreen(
+                onNavigateProfile = {
+                    mainNavController.navigate(
+                        route = MainRoute.Profile(
+                            id = 1,
+                            fullName = "John Doe",
+                            city = "San Francisco"
+                        )
+                    )
+                }
+            )
         }
 
         composable(route = MainRoute.Profile()) { data -> // data: MainRoute.Profile
@@ -105,12 +116,20 @@ fun MainNavGraph(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
+fun HomeScreen(
+    onNavigateProfile: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
         Text(text = "Home Screen")
+        
+        Button(onClick = onNavigateProfile) {
+            Text(text = "Go to Profile Screen")
+        }
     } 
 }
 
