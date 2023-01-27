@@ -7,7 +7,7 @@ navigation = "2.5.3"
 accompanist = "0.28.0"
 maven_publish = "0.23.2"
 
-library = "1.0.0"
+library = "1.0.1"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "gradle" }
