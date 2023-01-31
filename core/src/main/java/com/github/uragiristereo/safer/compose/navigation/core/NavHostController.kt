@@ -16,8 +16,8 @@ fun NavHostController.navigate(
     navigatorExtras: Navigator.Extras? = null,
 ) {
     val parsedRoute = when {
-        route.route.contains(other = Util.DATA_FULL) -> route.parseData()
-        else -> route.route
+        route::class.withData -> route.parseData()
+        else -> route::class.route
     }
 
     val uri = NavDestination.createRoute(parsedRoute).toUri()

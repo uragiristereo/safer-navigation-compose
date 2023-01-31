@@ -15,9 +15,9 @@ import com.github.uragiristereo.safer.compose.navigation.core.Util
 import com.github.uragiristereo.safer.compose.navigation.core.route
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
-import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 @OptIn(ExperimentalAnimationApi::class)
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     route: T,
@@ -28,12 +28,12 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     composable(
-        route = route.route,
+        route = klass.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
@@ -41,20 +41,14 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         content = { entry ->
-            val data = remember(entry) {
-                when (val data = entry.arguments?.getString(Util.DATA)) {
-                    null -> route
+            val data = remember(entry) { Util.getDataOrNull(klass, entry) }
 
-                    else -> Serializer.decode(data) ?: route
-                }
-            }
-
-            content(entry, data)
+            content(entry, data ?: route)
         },
     )
 }
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
 @OptIn(ExperimentalAnimationApi::class)
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     route: T,
@@ -66,12 +60,12 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     composable(
-        route = route.route,
+        route = klass.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
@@ -94,14 +88,10 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     composable(
-        route = newRoute.route,
+        route = route.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
@@ -128,14 +118,10 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     composable(
-        route = newRoute.route,
+        route = route.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
@@ -150,80 +136,8 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.navigation(
-    startDestination: NavRoute,
-    route: NavRoute,
-    deepLinks: List<NavDeepLink> = listOf(),
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit,
-) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        builder = builder,
-    )
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.navigation(
     startDestination: KClass<NavRoute>,
     route: KClass<NavRoute>,
-    deepLinks: List<NavDeepLink> = listOf(),
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit,
-) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        builder = builder,
-    )
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.navigation(
-    startDestination: NavRoute,
-    route: KClass<NavRoute>,
-    deepLinks: List<NavDeepLink> = listOf(),
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit,
-) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        builder = builder,
-    )
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.navigation(
-    startDestination: KClass<NavRoute>,
-    route: NavRoute,
     deepLinks: List<NavDeepLink> = listOf(),
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,

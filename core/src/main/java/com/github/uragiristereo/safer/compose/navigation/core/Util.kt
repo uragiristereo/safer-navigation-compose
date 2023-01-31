@@ -8,8 +8,9 @@ import kotlin.reflect.KClass
 
 object Util {
     const val DATA = "data"
+    const val DATA_BRACKETS = "{data}"
     const val DATA_FULL = "?data={data}"
-    
+
     inline fun <reified T : NavRoute> getDataOrNull(
         route: KClass<T>,
         entry: NavBackStackEntry,
