@@ -3,7 +3,7 @@ package com.github.uragiristereo.safer.compose.navigation.core
 import android.util.Log
 import androidx.navigation.NavBackStackEntry
 
-object NavRouteUtil {
+object Util {
     inline fun <reified T> getDataOrNull(
         route: NavRoute,
         entry: NavBackStackEntry,

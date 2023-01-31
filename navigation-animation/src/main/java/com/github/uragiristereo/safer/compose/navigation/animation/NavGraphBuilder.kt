@@ -12,7 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
-import com.github.uragiristereo.safer.compose.navigation.core.NavRouteUtil
+import com.github.uragiristereo.safer.compose.navigation.core.Util
 import com.github.uragiristereo.safer.compose.navigation.core.Serializer
 import com.github.uragiristereo.safer.compose.navigation.core.namedNavArg
 import com.github.uragiristereo.safer.compose.navigation.core.route
@@ -111,7 +111,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
         popExitTransition = popExitTransition,
         content = { entry ->
             val data = remember(entry) {
-                NavRouteUtil.getDataOrNull<T>(newRoute, entry)
+                Util.getDataOrNull<T>(newRoute, entry)
             }
 
             content(entry, data)

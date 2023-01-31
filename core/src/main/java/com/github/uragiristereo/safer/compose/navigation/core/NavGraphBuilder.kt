@@ -73,7 +73,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
         arguments = listOf(namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
-            val data = remember(entry) { NavRouteUtil.getDataOrNull<T>(newRoute, entry) }
+            val data = remember(entry) { Util.getDataOrNull<T>(newRoute, entry) }
 
             content(entry, data)
         },
