@@ -2,6 +2,7 @@ package com.github.uragiristereo.safer.compose.navigation.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
@@ -12,6 +13,7 @@ import kotlin.reflect.KClass
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: T,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
     val klass = route::class as KClass<T>
@@ -22,6 +24,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
         route = klass.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             val data = remember(entry) { Util.getDataOrNull(klass, entry) }
 
@@ -35,6 +38,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: T,
     disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
     val klass = route::class as KClass<T>
@@ -45,6 +49,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
         route = klass.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             content(entry)
         },
@@ -54,6 +59,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
     Serializer.registerRoute(route)
@@ -62,6 +68,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
         route = route.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
@@ -75,6 +82,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: KClass<T>,
     disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
     Serializer.registerRoute(route)
@@ -83,6 +91,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
         route = route.route,
         arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             content(entry)
         },
