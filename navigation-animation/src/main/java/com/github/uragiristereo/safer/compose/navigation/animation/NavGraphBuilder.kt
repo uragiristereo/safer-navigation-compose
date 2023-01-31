@@ -135,15 +135,15 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.navigation(
-    startDestination: KClass<NavRoute>,
-    route: KClass<NavRoute>,
+inline fun <reified T : NavRoute> NavGraphBuilder.navigation(
+    startDestination: KClass<T>,
+    route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit,
+    noinline enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
+    noinline exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
+    noinline popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
+    noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
+    noinline builder: NavGraphBuilder.() -> Unit,
 ) {
     navigation(
         startDestination = startDestination.route,

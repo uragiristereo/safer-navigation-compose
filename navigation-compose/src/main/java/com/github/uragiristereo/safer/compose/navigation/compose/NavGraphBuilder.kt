@@ -94,11 +94,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     )
 }
 
-fun NavGraphBuilder.navigation(
-    startDestination: KClass<NavRoute>,
-    route: KClass<NavRoute>,
+inline fun <reified T : NavRoute> NavGraphBuilder.navigation(
+    startDestination: KClass<T>,
+    route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
-    builder: NavGraphBuilder.() -> Unit,
+    noinline builder: NavGraphBuilder.() -> Unit,
 ) {
     navigation(
         startDestination = startDestination.route,
