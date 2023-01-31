@@ -4,7 +4,6 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import kotlin.reflect.KClass
 
-@NoArg
 interface NavRoute {
     val route: String
 }
