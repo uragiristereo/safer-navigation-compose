@@ -16,7 +16,7 @@ fun NavHostController.navigate(
     navigatorExtras: Navigator.Extras? = null,
 ) {
     val parsedRoute = when {
-        route.route.contains(other = "?data={data}") -> route.parseData()
+        route.route.contains(other = Util.DATA_FULL) -> route.parseData()
         else -> route.route
     }
 

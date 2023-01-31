@@ -8,9 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
-import com.github.uragiristereo.safer.compose.navigation.core.Util
 import com.github.uragiristereo.safer.compose.navigation.core.Serializer
-import com.github.uragiristereo.safer.compose.navigation.core.namedNavArg
+import com.github.uragiristereo.safer.compose.navigation.core.Util
 import com.github.uragiristereo.safer.compose.navigation.core.route
 import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
@@ -26,11 +25,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             val data = remember(entry) {
-                when (val data = entry.arguments?.getString("data")) {
+                when (val data = entry.arguments?.getString(Util.DATA)) {
                     null -> route
 
                     else -> Serializer.decode(data) ?: route
@@ -55,7 +54,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)
@@ -76,11 +75,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             val data = remember(entry) {
-                Util.getDataOrNull<T>(newRoute, entry)
+                Util.getDataOrNull(route, entry)
             }
 
             content(entry, data)
@@ -103,7 +102,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)
@@ -120,7 +119,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )
@@ -135,7 +134,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )
@@ -150,7 +149,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )
@@ -165,7 +164,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )

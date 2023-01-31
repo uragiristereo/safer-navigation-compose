@@ -9,13 +9,12 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
+import com.github.uragiristereo.safer.compose.navigation.core.Serializer
+import com.github.uragiristereo.safer.compose.navigation.core.Util
+import com.github.uragiristereo.safer.compose.navigation.core.route
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
-import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
-import com.github.uragiristereo.safer.compose.navigation.core.Util
-import com.github.uragiristereo.safer.compose.navigation.core.Serializer
-import com.github.uragiristereo.safer.compose.navigation.core.namedNavArg
-import com.github.uragiristereo.safer.compose.navigation.core.route
 import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
@@ -35,7 +34,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -43,7 +42,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
         popExitTransition = popExitTransition,
         content = { entry ->
             val data = remember(entry) {
-                when (val data = entry.arguments?.getString("data")) {
+                when (val data = entry.arguments?.getString(Util.DATA)) {
                     null -> route
 
                     else -> Serializer.decode(data) ?: route
@@ -73,7 +72,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -103,16 +102,14 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         content = { entry ->
-            val data = remember(entry) {
-                Util.getDataOrNull<T>(newRoute, entry)
-            }
+            val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
         },
@@ -139,7 +136,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 
     composable(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -165,7 +162,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -189,7 +186,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -213,7 +210,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
@@ -237,7 +234,7 @@ fun NavGraphBuilder.navigation(
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,

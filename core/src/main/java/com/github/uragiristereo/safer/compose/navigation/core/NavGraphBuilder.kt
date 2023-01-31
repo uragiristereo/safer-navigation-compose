@@ -20,11 +20,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 
     dialog(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             val data = remember(entry) {
-                when (val data = entry.arguments?.getString("data")) {
+                when (val data = entry.arguments?.getString(Util.DATA)) {
                     null -> route
 
                     else -> Serializer.decode(data) ?: route
@@ -49,7 +49,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 
     dialog(
         route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)
@@ -70,10 +70,10 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 
     dialog(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
-            val data = remember(entry) { Util.getDataOrNull<T>(newRoute, entry) }
+            val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
         },
@@ -95,7 +95,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 
     dialog(
         route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)

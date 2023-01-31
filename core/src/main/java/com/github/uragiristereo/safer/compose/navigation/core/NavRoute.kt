@@ -1,7 +1,5 @@
 package com.github.uragiristereo.safer.compose.navigation.core
 
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import kotlin.reflect.KClass
 
 interface NavRoute {
@@ -16,10 +14,4 @@ internal fun NavRoute.parseData(): String {
     val encoded = Serializer.encode(value = this)
 
     return route.replaceFirst(oldValue = "{data}", newValue = encoded)
-}
-
-val namedNavArg = navArgument(name = "data") {
-    type = NavType.StringType
-    nullable = true
-    defaultValue = null
 }
