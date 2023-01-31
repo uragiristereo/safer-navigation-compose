@@ -135,9 +135,9 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-inline fun <reified T : NavRoute> NavGraphBuilder.navigation(
-    startDestination: KClass<T>,
-    route: KClass<T>,
+inline fun <reified A : NavRoute, B : NavRoute> NavGraphBuilder.navigation(
+    startDestination: KClass<A>,
+    route: KClass<B>,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
     noinline exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
