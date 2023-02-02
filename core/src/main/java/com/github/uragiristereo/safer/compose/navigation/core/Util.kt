@@ -15,8 +15,12 @@ object Util {
         route: KClass<T>,
         entry: NavBackStackEntry,
     ): T? {
-        return when (val data = entry.arguments?.getString(DATA)) {
-            null -> {
+        val data = entry.arguments?.getString(DATA)
+
+        return when {
+            isClassAnObject(route) -> getObjectInstance(route)
+
+            data == null -> {
                 val e = IllegalArgumentException("Expecting navigation route data for \"${route.route}\" but got null!")
 
                 Log.d("SaferNavigationCompose", "${e.message}")
@@ -29,7 +33,9 @@ object Util {
     }
 
     fun isClassAnObject(klass: KClass<*>): Boolean {
-        return klass.java.declaredFields.any { it.type == klass.java && it.name == "INSTANCE" }
+        return klass.java.declaredFields.any {
+            it.type == klass.java && it.name == "INSTANCE"
+        }
     }
 
     inline fun <reified T> getObjectInstance(klass: KClass<*>): T {
