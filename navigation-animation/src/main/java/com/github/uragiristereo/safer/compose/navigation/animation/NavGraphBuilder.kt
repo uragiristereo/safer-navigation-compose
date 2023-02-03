@@ -135,7 +135,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-inline fun <reified A : NavRoute, B : NavRoute> NavGraphBuilder.navigation(
+inline fun <reified A : NavRoute, reified B : NavRoute> NavGraphBuilder.navigation(
     startDestination: KClass<A>,
     route: KClass<B>,
     deepLinks: List<NavDeepLink> = listOf(),
@@ -145,6 +145,8 @@ inline fun <reified A : NavRoute, B : NavRoute> NavGraphBuilder.navigation(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline builder: NavGraphBuilder.() -> Unit,
 ) {
+    Serializer.registerRoute(route)
+
     navigation(
         startDestination = startDestination.route,
         route = route.route,
