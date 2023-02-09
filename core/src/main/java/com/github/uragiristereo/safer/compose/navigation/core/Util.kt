@@ -32,13 +32,13 @@ object Util {
         }
     }
 
-    fun isClassAnObject(klass: KClass<*>): Boolean {
+    inline fun <reified T : Any> isClassAnObject(klass: KClass<T>): Boolean {
         return klass.java.declaredFields.any {
             it.type == klass.java && it.name == "INSTANCE"
         }
     }
 
-    inline fun <reified T> getObjectInstance(klass: KClass<*>): T {
+    inline fun <reified T : Any> getObjectInstance(klass: KClass<T>): T {
         return klass.java.getDeclaredField("INSTANCE").get(null) as T
     }
 
