@@ -22,15 +22,16 @@ object Serializer {
             module?.let { serializersModule = it }
         }
 
-    inline fun <reified T : NavRoute> registerRoute(klass: KClass<T>) {
+    @Suppress("UNCHECKED_CAST")
+    fun registerRoute(klass: KClass<out NavRoute>) {
         if (!Util.isClassAnObject(klass)) {
             addPolymorphicType(name = klass.qualifiedName!!) {
-                subclass(klass, serializer())
+                subclass(klass as KClass<NavRoute>, serializer())
             }
         }
     }
 
-    fun addPolymorphicType(
+    private fun addPolymorphicType(
         name: String,
         builder: PolymorphicModuleBuilder<NavRoute>.() -> Unit,
     ) {

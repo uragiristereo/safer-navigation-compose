@@ -7,15 +7,11 @@ import androidx.navigation.navArgument
 import kotlin.reflect.KClass
 
 object Util {
-    const val DATA = "data"
-    const val DATA_BRACKETS = "{data}"
-    const val DATA_FULL = "?data={data}"
-
     inline fun <reified T : NavRoute> getDataOrNull(
         route: KClass<T>,
         entry: NavBackStackEntry,
     ): T? {
-        val data = entry.arguments?.getString(DATA)
+        val data = entry.arguments?.getString("data")
 
         return when {
             isClassAnObject(route) -> getObjectInstance(route)
@@ -28,11 +24,11 @@ object Util {
                 null
             }
 
-            else -> Serializer.decode(data)
+            else -> Serializer.decode("data")
         }
     }
 
-    inline fun <reified T : Any> isClassAnObject(klass: KClass<T>): Boolean {
+    fun isClassAnObject(klass: KClass<out NavRoute>): Boolean {
         return klass.java.declaredFields.any {
             it.type == klass.java && it.name == "INSTANCE"
         }
@@ -42,7 +38,7 @@ object Util {
         return klass.java.getDeclaredField("INSTANCE").get(null) as T
     }
 
-    val namedNavArg = navArgument(name = DATA) {
+    val namedNavArg = navArgument(name = "data") {
         type = NavType.StringType
         nullable = true
         defaultValue = null

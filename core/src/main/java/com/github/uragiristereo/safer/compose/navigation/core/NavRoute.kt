@@ -8,15 +8,7 @@ inline val KClass<out NavRoute>.route: String
     get() = this.java.name
         .lowercase()
         .replace(oldChar = '.', newChar = '/')
-        .replace(oldChar = '$', newChar = '/') + when {
-        withData -> ""
-        else -> Util.DATA_FULL
-    }
-
-inline val KClass<out NavRoute>.withData: Boolean
-    get() = !this.java.declaredFields.any {
-        it.type == this.java && it.name == "INSTANCE"
-    }
+        .replace(oldChar = '$', newChar = '/')
 
 @get:JvmName("NavRouteGetRoute")
 val NavRoute.route: String
@@ -27,11 +19,13 @@ val NavRoute?.route: String?
     get() = this?.let { it::class.route }
 
 internal fun NavRoute.parseData(): String {
-    val encoded = Serializer.encode(value = this)
+    val withData = !Util.isClassAnObject(this::class)
+    var route = this::class.route
 
-    return this::class.route
-        .replaceFirst(
-            oldValue = Util.DATA_BRACKETS,
-            newValue = encoded,
-        )
+    if (withData) {
+        val encoded = Serializer.encode(value = this)
+        route += "?data=$encoded"
+    }
+
+    return route
 }
