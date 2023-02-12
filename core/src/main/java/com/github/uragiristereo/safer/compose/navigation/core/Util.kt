@@ -24,7 +24,7 @@ object Util {
                 null
             }
 
-            else -> Serializer.decode("data")
+            else -> Serializer.decode(data)
         }
     }
 
