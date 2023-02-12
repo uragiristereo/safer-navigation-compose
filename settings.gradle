@@ -19,3 +19,4 @@ rootProject.name = "Safer Compose Navigation"
 include(":core")
 include(":navigation-compose")
 include(":navigation-animation")
+include(":sample")
