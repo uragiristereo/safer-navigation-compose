@@ -11,7 +11,7 @@ _Last updated: February 13rd 2023, version: 1.1.0_
 - [Integrating with Bottom Navigation Bar](#integrating-with-bottom-navigation-bar)
 
 ### Setup
-Refer to the [README](README.md) page.
+Refer to the [README](../README.md) page.
 
 ### Quick start
 
@@ -160,4 +160,4 @@ val postRouteStr = MainRoute.Post::class.route
 
 ### Integrating with Bottom Navigation Bar
 
-Refer to the [:sample](/sample) project.
+Refer to the [:sample](../sample) project.
