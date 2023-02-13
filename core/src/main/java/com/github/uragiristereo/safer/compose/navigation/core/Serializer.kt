@@ -9,6 +9,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
 
 object Serializer {
     private val navRoutes = mutableMapOf<String, PolymorphicModuleBuilder<NavRoute>.() -> Unit>()
@@ -19,6 +21,14 @@ object Serializer {
             ignoreUnknownKeys = true
             module?.let { serializersModule = it }
         }
+
+    inline fun <reified T : NavRoute> registerRoute(klass: KClass<T>) {
+        if (!Util.isClassAnObject(klass)) {
+            addPolymorphicType(name = klass.qualifiedName!!) {
+                subclass(klass, serializer())
+            }
+        }
+    }
 
     fun addPolymorphicType(
         name: String,

@@ -1,26 +1,31 @@
 package com.github.uragiristereo.safer.compose.navigation.core
 
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import kotlin.reflect.KClass
 
-@NoArg
-interface NavRoute {
-    val route: String
-}
+interface NavRoute
 
-val <T : NavRoute> KClass<T>.route: String
-    get() = this.java.getConstructor().newInstance().route
+inline val KClass<out NavRoute>.route: String
+    get() = this.java.name
+        .lowercase()
+        .replace(oldChar = '.', newChar = '/')
+        .replace(oldChar = '$', newChar = '/') + "?data={data}"
 
+@get:JvmName("NavRouteGetRoute")
+val NavRoute.route: String
+    get() = this::class.route
+
+@get:JvmName("NavRouteGetRouteNullable")
+val NavRoute?.route: String?
+    get() = this?.let { it::class.route }
 
 internal fun NavRoute.parseData(): String {
-    val encoded = Serializer.encode(value = this)
+    val withData = !Util.isClassAnObject(this::class)
+    var route = this::class.route
 
-    return route.replaceFirst(oldValue = "{data}", newValue = encoded)
-}
+    if (withData) {
+        val encoded = Serializer.encode(value = this)
+        route = route.replaceFirst(oldValue = "{data}", newValue = encoded)
+    }
 
-val namedNavArg = navArgument(name = "data") {
-    type = NavType.StringType
-    nullable = true
-    defaultValue = null
+    return route
 }

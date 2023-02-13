@@ -14,37 +14,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
+import com.github.uragiristereo.safer.compose.navigation.core.route
 import kotlin.reflect.KClass
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-inline fun <reified T : NavRoute> AnimatedNavHost(
-    navController: NavHostController,
-    startDestination: T,
-    modifier: Modifier = Modifier,
-    contentAlignment: Alignment = Alignment.Center,
-    route: String? = null,
-    noinline enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) =
-        { fadeIn(animationSpec = tween(700)) },
-    noinline exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) =
-        { fadeOut(animationSpec = tween(700)) },
-    noinline popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) = enterTransition,
-    noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) = exitTransition,
-    noinline builder: NavGraphBuilder.() -> Unit,
-) {
-    com.google.accompanist.navigation.animation.AnimatedNavHost(
-        navController = navController,
-        startDestination = startDestination.route,
-        modifier = modifier,
-        contentAlignment = contentAlignment,
-        route = route,
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        builder = builder,
-    )
-}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -62,11 +33,9 @@ inline fun <reified T : NavRoute> AnimatedNavHost(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) = exitTransition,
     noinline builder: NavGraphBuilder.() -> Unit,
 ) {
-    val startRoute = startDestination.java.getConstructor().newInstance()
-
     com.google.accompanist.navigation.animation.AnimatedNavHost(
         navController = navController,
-        startDestination = startRoute.route,
+        startDestination = startDestination.route,
         modifier = modifier,
         contentAlignment = contentAlignment,
         route = route,

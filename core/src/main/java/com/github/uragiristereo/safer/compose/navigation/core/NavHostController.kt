@@ -15,12 +15,8 @@ fun NavHostController.navigate(
     navOptions: NavOptions? = null,
     navigatorExtras: Navigator.Extras? = null,
 ) {
-    val parsedRoute = when {
-        route.route.contains(other = "?data={data}") -> route.parseData()
-        else -> route.route
-    }
-
-    val uri = NavDestination.createRoute(parsedRoute).toUri()
+    val data = route.parseData()
+    val uri = NavDestination.createRoute(data).toUri()
 
     try {
         navigate(

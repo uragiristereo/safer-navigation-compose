@@ -2,55 +2,54 @@ package com.github.uragiristereo.safer.compose.navigation.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
-import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: T,
     deepLinks: List<NavDeepLink> = listOf(),
-    noinline content: @Composable T.(NavBackStackEntry) -> Unit,
+    dialogProperties: DialogProperties = DialogProperties(),
+    noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     dialog(
-        route = route.route,
-        arguments = listOf(namedNavArg),
+        route = klass.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
-            val data = remember(entry) {
-                when (val data = entry.arguments?.getString("data")) {
-                    null -> route
+            val data = remember(entry) { Util.getDataOrNull(klass, entry) }
 
-                    else -> Serializer.decode(data) ?: route
-                }
-            }
-
-            content(data, entry)
+            content(entry, data ?: route)
         },
     )
 }
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: T,
     disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     dialog(
-        route = route.route,
-        arguments = listOf(namedNavArg),
+        route = klass.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             content(entry)
         },
@@ -60,20 +59,18 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     dialog(
-        route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        route = route.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
-            val data = remember(entry) { NavRouteUtil.getDataOrNull<T>(newRoute, entry) }
+            val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
         },
@@ -85,18 +82,16 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: KClass<T>,
     disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
+    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     dialog(
-        route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        route = route.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
         content = { entry ->
             content(entry)
         },

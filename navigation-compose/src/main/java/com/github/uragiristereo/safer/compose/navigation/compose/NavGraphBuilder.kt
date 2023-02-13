@@ -8,54 +8,47 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
-import com.github.uragiristereo.safer.compose.navigation.core.NavRouteUtil
 import com.github.uragiristereo.safer.compose.navigation.core.Serializer
-import com.github.uragiristereo.safer.compose.navigation.core.namedNavArg
+import com.github.uragiristereo.safer.compose.navigation.core.Util
 import com.github.uragiristereo.safer.compose.navigation.core.route
-import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     route: T,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     composable(
-        route = route.route,
-        arguments = listOf(namedNavArg),
+        route = klass.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
-            val data = remember(entry) {
-                when (val data = entry.arguments?.getString("data")) {
-                    null -> route
+            val data = remember(entry) { Util.getDataOrNull(klass, entry) }
 
-                    else -> Serializer.decode(data) ?: route
-                }
-            }
-
-            content(entry, data)
+            content(entry, data ?: route)
         },
     )
 }
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     route: T,
     disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    val klass = route::class as KClass<T>
+
+    Serializer.registerRoute(klass)
 
     composable(
-        route = route.route,
-        arguments = listOf(namedNavArg),
+        route = klass.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)
@@ -68,20 +61,14 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     composable(
-        route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        route = route.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
-            val data = remember(entry) {
-                NavRouteUtil.getDataOrNull<T>(newRoute, entry)
-            }
+            val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
         },
@@ -95,15 +82,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    val newRoute = route.java.getConstructor().newInstance()
-
-    Serializer.addPolymorphicType(name = T::class.qualifiedName!!) {
-        subclass(T::class, serializer())
-    }
+    Serializer.registerRoute(route)
 
     composable(
-        route = newRoute.route,
-        arguments = listOf(namedNavArg),
+        route = route.route,
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
             content(entry)
@@ -111,61 +94,18 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     )
 }
 
-fun NavGraphBuilder.navigation(
-    startDestination: NavRoute,
-    route: NavRoute,
+inline fun <reified A : NavRoute, reified B : NavRoute> NavGraphBuilder.navigation(
+    startDestination: KClass<A>,
+    route: KClass<B>,
     deepLinks: List<NavDeepLink> = listOf(),
-    builder: NavGraphBuilder.() -> Unit,
+    noinline builder: NavGraphBuilder.() -> Unit,
 ) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(namedNavArg),
-        deepLinks = deepLinks,
-        builder = builder,
-    )
-}
+    Serializer.registerRoute(route)
 
-fun NavGraphBuilder.navigation(
-    startDestination: KClass<NavRoute>,
-    route: KClass<NavRoute>,
-    deepLinks: List<NavDeepLink> = listOf(),
-    builder: NavGraphBuilder.() -> Unit,
-) {
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(namedNavArg),
-        deepLinks = deepLinks,
-        builder = builder,
-    )
-}
-
-fun NavGraphBuilder.navigation(
-    startDestination: NavRoute,
-    route: KClass<NavRoute>,
-    deepLinks: List<NavDeepLink> = listOf(),
-    builder: NavGraphBuilder.() -> Unit,
-) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(namedNavArg),
-        deepLinks = deepLinks,
-        builder = builder,
-    )
-}
-
-fun NavGraphBuilder.navigation(
-    startDestination: KClass<NavRoute>,
-    route: NavRoute,
-    deepLinks: List<NavDeepLink> = listOf(),
-    builder: NavGraphBuilder.() -> Unit,
-) {
-    navigation(
-        startDestination = startDestination.route,
-        route = route.route,
-        arguments = listOf(namedNavArg),
+        arguments = listOf(Util.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )
