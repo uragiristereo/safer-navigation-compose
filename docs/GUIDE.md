@@ -1,6 +1,6 @@
 ## Guide
 
-_Last updated: February 13rd 2023, version: 1.1.0_
+_Last updated: February 14rd 2023, version: 1.1.0_
 
 ### Table of Contents
 
@@ -20,7 +20,7 @@ Create a sealed interface class that contains the routes.
 ```kotlin
 sealed interface MainRoute : NavRoute {
     // object type route for route without any data
-    object Home : NavRoute
+    object Home : MainRoute
     
     // data class type route with default values
     @Serializable
@@ -28,14 +28,14 @@ sealed interface MainRoute : NavRoute {
         val id: Int = 0,
         val fullName: String = "John Doe",
         val city: String? = null
-    ) : NavRoute
+    ) : MainRoute
 
     // data class route without default values
     @Serializable
     data class Post(
         val userId: Int,
         val postId: Int
-    ) : NavRoute
+    ) : MainRoute
 }
 ```
 
