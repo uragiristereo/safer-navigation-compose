@@ -5,11 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.github.uragiristereo.safer.compose.navigation.compose.NavHost
 import com.github.uragiristereo.safer.compose.navigation.compose.composable
-import com.github.uragiristereo.safer.compose.sample.screen.FeedScreen
-import com.github.uragiristereo.safer.compose.sample.screen.MessagesScreen
-import com.github.uragiristereo.safer.compose.sample.screen.ProfileScreen
-import com.github.uragiristereo.safer.compose.sample.screen.SearchScreen
-import com.github.uragiristereo.safer.compose.sample.screen.SettingsScreen
+import com.github.uragiristereo.safer.compose.sample.screen.*
 
 @Composable
 fun MainNavHost(
@@ -23,28 +19,18 @@ fun MainNavHost(
         startDestination = AppRoute.Feed::class,
         modifier = modifier,
     ) {
-        // set disableDeserialization = true for object type routes (recommended)
-        composable(
-            route = AppRoute.Feed,
-            disableDeserialization = true,
-        ) {
+        composable<AppRoute.Feed> {
             FeedScreen(
                 onProfileClick = onProfileClick,
                 onSettingsClick = onSettingsClick,
             )
         }
 
-        composable(
-            route = AppRoute.Search,
-            disableDeserialization = true,
-        ) {
+        composable<AppRoute.Search> {
             SearchScreen()
         }
 
-        composable(
-            route = AppRoute.Messages,
-            disableDeserialization = true,
-        ) {
+        composable<AppRoute.Messages> {
             MessagesScreen()
         }
 
