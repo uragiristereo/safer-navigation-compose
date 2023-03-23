@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(project(":navigation-compose"))
     
     implementation(libs.bundles.androidx)
