@@ -35,14 +35,11 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     )
 }
 
-@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: T,
-    disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    val klass = route::class as KClass<T>
+    val klass = T::class
 
     Serializer.registerRoute(klass)
 
@@ -71,25 +68,6 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
             val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER")
-inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: KClass<T>,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    Serializer.registerRoute(route)
-
-    composable(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        content = { entry ->
-            content(entry)
         },
     )
 }

@@ -48,11 +48,8 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     )
 }
 
-@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
 @OptIn(ExperimentalAnimationApi::class)
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: T,
-    disableDeserialization: Boolean,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
     noinline exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
@@ -60,7 +57,7 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
     noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     noinline content: @Composable NavBackStackEntry.() -> Unit,
 ) {
-    val klass = route::class as KClass<T>
+    val klass = T::class
 
     Serializer.registerRoute(klass)
 
@@ -102,34 +99,6 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
             val data = remember(entry) { Util.getDataOrNull(route, entry) }
 
             content(entry, data)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER")
-@OptIn(ExperimentalAnimationApi::class)
-inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: KClass<T>,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    noinline enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    noinline exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    noinline popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    noinline popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    Serializer.registerRoute(route)
-
-    composable(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        content = { entry ->
-            content(entry)
         },
     )
 }
