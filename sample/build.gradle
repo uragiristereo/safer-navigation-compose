@@ -54,7 +54,4 @@ dependencies {
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.compose)
     debugImplementation(libs.bundles.compose.debug)
-
-    implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
 }

@@ -46,6 +46,6 @@ publishing {
 
 
 dependencies {
-    implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
+    api(libs.navigation.compose)
+    api(libs.kotlinx.serialization.json)
 }
