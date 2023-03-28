@@ -1,12 +1,12 @@
 ## Guide
 
-_Last updated: February 14rd 2023, version: 1.1.0_
+_Last updated: March 27th 2023_
 
 ### Table of Contents
 
 - [Setup](#setup)
 - [Quick start](#quick-start)
-- [Getting data from a ViewModel](#how-about-getting-the-data-from-a-viewmodel-)
+- [Getting data from a ViewModel](#how-about-getting-the-data-from-a-viewmodel)
 - [Getting NavRoute's String route](#getting-navroutes-string-route)
 - [Integrating with Bottom Navigation Bar](#integrating-with-bottom-navigation-bar)
 
@@ -52,11 +52,7 @@ fun MainNavHost(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         // object type route for route without any data
-        // set disableDeserialization = true for object type routes (recommended)
-        composable(
-            route = MainRoute.Home,
-            disableDeserialization = true
-        ) {
+        composable<MainRoute.Home> {
             HomeScreen()
         }
 
@@ -111,36 +107,6 @@ class ProfileViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 }
 ```
 
-In some cases, you might want to get the data only in the `ViewModel`, you can disable deserialization in the composable builder to make sure the data doesn't get deserialized twice to optimize the performance.
-
-To do this, simply add `disableDeserialization = true` inside the `composable` parameter.
-
-```kotlin
-@Composable
-fun MainNavGraph() {
-    NavHost( /*...*/ ) {
-        // ...
-        
-        composable(
-            route = MainRoute.Profile(),
-            disableDeserialization = true
-        ) {
-            ProfileScreen()
-        }
-    }
-}
-
-@Composable
-fun ProfileScreen(
-    modifier: Modifier = Modifier,
-    profileViewModel: ProfileViewModel = viewModels()
-) {
-    LaunchedEffect(key1 = viewModel.data) {
-        Log.d("ProfileScreen", "data = ${viewModel.data}")
-    }
-}
-```
-
 ### Getting NavRoute's String route
 
 Getting the String route is useful for navigation logic purposes like checking which route is the current route, Bottom Navigation Bar integration, handling different transitions (for Accompanist Navigation Animation), etc.
@@ -148,14 +114,15 @@ Getting the String route is useful for navigation logic purposes like checking w
 Since the library is actually just an extension on top of the `navigation-compose` library, the actual String route from classes that extends `NavRoute` are generated automatically and can be retrieved by using one of these:
 
 ```kotlin
-// for object type route
-val homeRouteStr = MainRoute.Home.route
+// for any data type route
+val postRouteStr = MainRoute.Post::class.route
 
 // for data class type route (with default values)
 val profileRouteStr = MainRoute.Profile().route
 
-// for data class type route (without default values)
-val postRouteStr = MainRoute.Post::class.route
+// for object type route
+val homeRouteStr = MainRoute.Home.route
+
 ```
 
 ### Integrating with Bottom Navigation Bar

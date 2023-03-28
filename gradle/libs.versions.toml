@@ -1,14 +1,14 @@
 [versions]
 gradle = "7.4.0"
-kotlin = "1.7.21"
-compose = "1.4.0-alpha03"
-compose_compiler = "1.4.0-alpha02"
+kotlin = "1.8.10"
+compose = "1.4.0"
+compose_compiler = "1.4.4"
 lifecycle = "2.5.1"
 navigation = "2.5.3"
-accompanist = "0.28.0"
+accompanist = "0.30.0"
 maven_publish = "0.23.2"
 
-library = "1.1.0"
+library = "1.2.0"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "gradle" }
@@ -18,7 +18,7 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 maven-publish = { id = "com.vanniktech.maven.publish.base", version.ref = "maven-publish" }
 
 [libraries]
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.4.1" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 
 # AndroidX

@@ -4,11 +4,10 @@ Type-safe extension library for the official Jetpack Compose Navigation library 
 
 This library is trying to solve many of the `androidx.navigation:navigation-compose` flaws, i.e. you can't send a class when navigating, no type-safety and boilerplate setup.
 
-Under the hood, the library uses base64 encoded JSON serialization to send and get the data back. But you don't need to do it manually as the library handles it automatically.
-
 ### Features
 
-- Type-safe, meaning it will check for failure in compile time. 
+- Navigating and getting data with type-safe manner. 
+- The library is just an extension on top of the `navigation-compose` library, so you can partially adopt it.
 - Easy migration path, you only need to modify a small amount of code in an existing codebase to get started.
 - Every features from the official library are still available, like nested navigation graph, deep links, etc.
 - Accompanist Navigation Animation supported in a separate artifact.
@@ -35,7 +34,7 @@ Add `Kotlinx.Serialization` plugin to your project's `build.gradle` file.
 ```groovy
 plugins {
     // Adjust with your project's Kotlin compiler version
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.21" apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10" apply false
 }
 ```
 
@@ -49,24 +48,13 @@ plugins {
 // ...
 
 dependencies {
-    // Kotlinx.Serialization
-    def kotlinx_serialization_version = "1.4.1"
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_version")
-    
-    // Core library
-    def safer_navigation_version = "1.1.0"
-    implementation("com.github.uragiristereo.safer.navigation.compose:core:$safer_navigation_version")
-
+    def safer_navigation_version = "1.2.0"
     // NOTE: You only need to add ONE of these that your project currently use to avoid wrong extension to import
     
     // Navigation Compose support
-    def navigation_version = "2.5.3"
-    implementation("androidx.navigation:navigation-compose:$navigation_version")
     implementation("com.github.uragiristereo.safer.navigation.compose:navigation-compose:$safer_navigation_version")
 
     // Or, Accompanist Navigation Animation support
-    def accompanist_version = "0.28.0"
-    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanist_version")
     implementation("com.github.uragiristereo.safer.navigation.compose:navigation-animation:$safer_navigation_version")
 }
 ```
