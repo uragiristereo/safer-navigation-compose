@@ -18,16 +18,13 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 maven-publish = { id = "com.vanniktech.maven.publish.base", version.ref = "maven-publish" }
 
 [libraries]
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.1" }
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
-
 # AndroidX
-androidx-core = { module = "androidx.core:core-ktx", version = "1.10.1" }
+androidx-ktx = { module = "androidx.core:core-ktx", version = "1.10.1" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate-ktx", version = "1.2.1" }
 
 # Compose
-compose = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material3:material3", version = "1.1.1" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
@@ -35,10 +32,15 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.7.2" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+# Navigation
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.1" }
 
 [bundles]
-androidx = ["androidx-core", "androidx-lifecycle-runtime", "androidx-savedstate"]
+androidx-core = ["androidx-ktx", "androidx-lifecycle-runtime", "androidx-savedstate"]
 androidx-compose = ["androidx-activity-compose", "androidx-lifecycle-viewmodel-compose"]
-compose = ["compose", "compose-material", "compose-tooling-preview"]
+compose-core = ["compose-ui", "compose-material", "compose-tooling-preview"]
 compose-debug = ["compose-ui-tooling", "compose-ui-test-manifest"]
