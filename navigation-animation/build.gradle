@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace "com.github.uragiristereo.safer.compose.navigation.animation"
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
@@ -54,7 +54,7 @@ publishing {
 
 dependencies {
     api(project(":core"))
-    api(libs.accompanist.navigation.animation)
+    api(libs.navigation.compose.unstable)
     implementation(libs.compose.animation)
     implementation(libs.kotlinx.serialization.json)
 }

@@ -25,6 +25,7 @@ android {
 
     buildFeatures {
         compose true
+        buildConfig true
     }
 
     composeOptions {
@@ -54,6 +55,6 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.navigation.compose)
+    implementation(libs.navigation.compose.stable)
     implementation(libs.kotlinx.serialization.json)
 }
