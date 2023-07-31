@@ -8,8 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
-import com.github.uragiristereo.safer.compose.navigation.core.Serializer
-import com.github.uragiristereo.safer.compose.navigation.core.Util
+import com.github.uragiristereo.safer.compose.navigation.core.SncUtil
 import com.github.uragiristereo.safer.compose.navigation.core.route
 import kotlin.reflect.KClass
 
@@ -21,75 +20,32 @@ inline fun <reified T : NavRoute> NavGraphBuilder.composable(
 ) {
     val klass = route::class as KClass<T>
 
-    Serializer.registerRoute(klass)
+    SncUtil.registerRoute(klass)
 
-    composable(
-        route = klass.route,
-        arguments = listOf(Util.namedNavArg),
+    composable<T>(
         deepLinks = deepLinks,
-        content = { entry ->
-            val data = remember(entry) { Util.getDataOrNull(klass, entry) }
-
-            content(entry, data ?: route)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
-inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: T,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    val klass = route::class as KClass<T>
-
-    Serializer.registerRoute(klass)
-
-    composable(
-        route = klass.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        content = { entry ->
-            content(entry)
+        content = { data ->
+            content(this, data ?: route)
         },
     )
 }
 
 inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
-    Serializer.registerRoute(route)
+    val klass = T::class
+
+    SncUtil.registerRoute(klass)
 
     composable(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
+        route = klass.route,
+        arguments = listOf(SncUtil.namedNavArg),
         deepLinks = deepLinks,
         content = { entry ->
-            val data = remember(entry) { Util.getDataOrNull(route, entry) }
+            val data = remember(this) { SncUtil.getDataOrNull(klass, entry) }
 
             content(entry, data)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER")
-inline fun <reified T : NavRoute> NavGraphBuilder.composable(
-    route: KClass<T>,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    Serializer.registerRoute(route)
-
-    composable(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        content = { entry ->
-            content(entry)
         },
     )
 }
@@ -100,12 +56,12 @@ inline fun <reified A : NavRoute, reified B : NavRoute> NavGraphBuilder.navigati
     deepLinks: List<NavDeepLink> = listOf(),
     noinline builder: NavGraphBuilder.() -> Unit,
 ) {
-    Serializer.registerRoute(route)
+    SncUtil.registerRoute(route)
 
     navigation(
         startDestination = startDestination.route,
         route = route.route,
-        arguments = listOf(Util.namedNavArg),
+        arguments = listOf(SncUtil.namedNavArg),
         deepLinks = deepLinks,
         builder = builder,
     )

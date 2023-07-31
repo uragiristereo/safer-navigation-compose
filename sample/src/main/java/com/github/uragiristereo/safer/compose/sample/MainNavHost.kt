@@ -23,33 +23,24 @@ fun MainNavHost(
         startDestination = AppRoute.Feed::class,
         modifier = modifier,
     ) {
-        // set disableDeserialization = true for object type routes (recommended)
-        composable(
-            route = AppRoute.Feed,
-            disableDeserialization = true,
-        ) {
+        composable(route = AppRoute.Feed) {
             FeedScreen(
                 onProfileClick = onProfileClick,
                 onSettingsClick = onSettingsClick,
             )
         }
 
-        composable(
-            route = AppRoute.Search,
-            disableDeserialization = true,
-        ) {
+        composable(route = AppRoute.Search) {
             SearchScreen()
         }
 
-        composable(
-            route = AppRoute.Messages,
-            disableDeserialization = true,
-        ) {
+        composable(route = AppRoute.Messages) {
             MessagesScreen()
         }
 
         // data class without default values
-        composable(route = AppRoute.Profile::class) { data ->
+        composable<AppRoute.Profile> { data ->
+            // data: AppRoute.Profile?
             // the data is nullable because uses route without constructor
             data?.let {
                 ProfileScreen(

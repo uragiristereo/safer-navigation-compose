@@ -18,82 +18,35 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 ) {
     val klass = route::class as KClass<T>
 
-    Serializer.registerRoute(klass)
+    SncUtil.registerRoute(klass)
 
-    dialog(
-        route = klass.route,
-        arguments = listOf(Util.namedNavArg),
+    dialog<T>(
         deepLinks = deepLinks,
         dialogProperties = dialogProperties,
-        content = { entry ->
-            val data = remember(entry) { Util.getDataOrNull(klass, entry) }
-
-            content(entry, data ?: route)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
-inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
-    route: T,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    dialogProperties: DialogProperties = DialogProperties(),
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    val klass = route::class as KClass<T>
-
-    Serializer.registerRoute(klass)
-
-    dialog(
-        route = klass.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        dialogProperties = dialogProperties,
-        content = { entry ->
-            content(entry)
+        content = { data ->
+            content(this, data ?: route)
         },
     )
 }
 
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
-    route: KClass<T>,
     deepLinks: List<NavDeepLink> = listOf(),
     dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
-    Serializer.registerRoute(route)
+    val klass = T::class
+
+    SncUtil.registerRoute(klass)
 
     dialog(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
+        route = klass.route,
+        arguments = listOf(SncUtil.namedNavArg),
         deepLinks = deepLinks,
         dialogProperties = dialogProperties,
         content = { entry ->
-            val data = remember(entry) { Util.getDataOrNull(route, entry) }
+            val data = remember(this) { SncUtil.getDataOrNull(klass, entry) }
 
             content(entry, data)
-        },
-    )
-}
-
-@Suppress("UNUSED_PARAMETER")
-inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
-    route: KClass<T>,
-    disableDeserialization: Boolean,
-    deepLinks: List<NavDeepLink> = listOf(),
-    dialogProperties: DialogProperties = DialogProperties(),
-    noinline content: @Composable NavBackStackEntry.() -> Unit,
-) {
-    Serializer.registerRoute(route)
-
-    dialog(
-        route = route.route,
-        arguments = listOf(Util.namedNavArg),
-        deepLinks = deepLinks,
-        dialogProperties = dialogProperties,
-        content = { entry ->
-            content(entry)
         },
     )
 }
