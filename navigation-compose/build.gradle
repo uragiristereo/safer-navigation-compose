@@ -53,7 +53,7 @@ publishing {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(libs.navigation.compose)
+    api(project(":core"))
+    api(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 }

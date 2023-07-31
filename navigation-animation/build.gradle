@@ -53,8 +53,8 @@ publishing {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
+    api(libs.accompanist.navigation.animation)
     implementation(libs.compose.animation)
-    implementation(libs.accompanist.navigation.animation)
     implementation(libs.kotlinx.serialization.json)
 }
