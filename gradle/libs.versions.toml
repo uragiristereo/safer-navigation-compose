@@ -1,5 +1,5 @@
 [versions]
-gradle = "7.4.0"
+gradle = "8.1.0"
 kotlin = "1.7.21"
 compose = "1.4.0-alpha03"
 compose_compiler = "1.4.0-alpha02"
