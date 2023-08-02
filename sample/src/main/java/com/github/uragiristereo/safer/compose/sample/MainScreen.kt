@@ -8,16 +8,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.github.uragiristereo.safer.compose.navigation.core.navigate
 import com.github.uragiristereo.safer.compose.sample.bottomnavigationbar.BottomNavigationBar
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 

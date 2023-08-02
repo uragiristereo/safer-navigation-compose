@@ -5,7 +5,7 @@ compose = "1.4.3"
 compose-compiler = "1.5.0"
 lifecycle = "2.6.1"
 navigation = "2.6.0"
-navigation-unstable = "2.7.0-rc01"
+accompanist = "0.30.1"
 maven-publish = "0.23.2"
 
 library = "1.1.0"
@@ -35,7 +35,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 
 # Navigation
 navigation-compose-stable = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
-navigation-compose-unstable = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-unstable" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.1" }
 
