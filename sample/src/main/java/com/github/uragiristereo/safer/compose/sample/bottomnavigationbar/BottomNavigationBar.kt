@@ -19,12 +19,12 @@ fun BottomNavigationBar(
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
-        visible = currentRoute in BottomNavigationBarItems.values().toRouteStringList(),
+        visible = currentRoute in BottomNavigationBarItems.entries.toTypedArray().toRouteStringList(),
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
         NavigationBar(modifier = modifier) {
-            BottomNavigationBarItems.values().forEach { item ->
+            BottomNavigationBarItems.entries.forEach { item ->
                 NavigationBarItem(
                     selected = currentRoute == item.route::class.route,
                     label = {

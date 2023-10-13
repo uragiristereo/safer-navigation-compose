@@ -4,8 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.github.uragiristereo.safer.compose.navigation.animation.AnimatedNavHost
-import com.github.uragiristereo.safer.compose.navigation.animation.composable
+import com.github.uragiristereo.safer.compose.navigation.compose.NavHost
+import com.github.uragiristereo.safer.compose.navigation.compose.composable
 import com.github.uragiristereo.safer.compose.sample.screen.FeedScreen
 import com.github.uragiristereo.safer.compose.sample.screen.MessagesScreen
 import com.github.uragiristereo.safer.compose.sample.screen.ProfileScreen
@@ -20,7 +20,7 @@ fun MainNavHost(
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = AppRoute.Feed::class,
         modifier = modifier,

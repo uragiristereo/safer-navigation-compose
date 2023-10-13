@@ -9,13 +9,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
 import kotlin.reflect.KClass
 
-@Suppress("UNCHECKED_CAST")
 inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
     route: T,
     deepLinks: List<NavDeepLink> = listOf(),
     dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
+    @Suppress("UNCHECKED_CAST")
     val klass = route::class as KClass<T>
 
     SncUtil.registerRoute(klass)
