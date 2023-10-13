@@ -54,6 +54,6 @@ publishing {
 
 dependencies {
     api(project(":core"))
-    api(libs.navigation.compose.stable)
+    api(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 }
