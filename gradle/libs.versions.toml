@@ -1,11 +1,11 @@
 [versions]
-gradle = "8.2.0-alpha14"
-kotlin = "1.9.0"
-compose = "1.4.3"
-compose-compiler = "1.5.0"
-lifecycle = "2.6.1"
-navigation = "2.6.0"
-accompanist = "0.30.1"
+gradle = "8.1.2"
+kotlin = "1.9.10"
+compose = "1.5.3"
+compose-compiler = "1.5.3"
+lifecycle = "2.6.2"
+navigation = "2.7.4"
+accompanist = "0.32.0"
 maven-publish = "0.23.2"
 
 library = "1.1.0"
@@ -19,25 +19,25 @@ maven-publish = { id = "com.vanniktech.maven.publish.base", version.ref = "maven
 
 [libraries]
 # AndroidX
-androidx-ktx = { module = "androidx.core:core-ktx", version = "1.10.1" }
+androidx-ktx = { module = "androidx.core:core-ktx", version = "1.12.0" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate-ktx", version = "1.2.1" }
 
 # Compose
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
-compose-material = { module = "androidx.compose.material3:material3", version = "1.1.1" }
+compose-material = { module = "androidx.compose.material3:material3", version = "1.1.2" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.7.2" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.8.0" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 # Navigation
 navigation-compose-stable = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.1" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.0" }
 
 [bundles]
 androidx-core = ["androidx-ktx", "androidx-lifecycle-runtime", "androidx-savedstate"]
