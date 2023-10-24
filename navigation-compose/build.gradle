@@ -7,10 +7,19 @@ plugins {
 
 android {
     namespace "com.github.uragiristereo.safer.compose.navigation.compose"
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -45,5 +54,6 @@ publishing {
 
 dependencies {
     api(project(":core"))
-    implementation(libs.navigation.compose)
+    api(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 }

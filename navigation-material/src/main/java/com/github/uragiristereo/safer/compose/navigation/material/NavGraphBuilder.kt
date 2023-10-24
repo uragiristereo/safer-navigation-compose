@@ -1,18 +1,20 @@
-package com.github.uragiristereo.safer.compose.navigation.core
+package com.github.uragiristereo.safer.compose.navigation.material
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.dialog
+import com.github.uragiristereo.safer.compose.navigation.core.NavRoute
+import com.github.uragiristereo.safer.compose.navigation.core.SncUtil
+import com.github.uragiristereo.safer.compose.navigation.core.route
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.bottomSheet
 import kotlin.reflect.KClass
 
-inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
+inline fun <reified T : NavRoute> NavGraphBuilder.bottomSheet(
     route: T,
     deepLinks: List<NavDeepLink> = listOf(),
-    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T) -> Unit,
 ) {
     @Suppress("UNCHECKED_CAST")
@@ -20,31 +22,29 @@ inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
 
     SncUtil.registerRoute(klass)
 
-    dialog<T>(
+    bottomSheet<T>(
         deepLinks = deepLinks,
-        dialogProperties = dialogProperties,
         content = { data ->
             content(this, data ?: route)
         },
     )
 }
 
-inline fun <reified T : NavRoute> NavGraphBuilder.dialog(
+@OptIn(ExperimentalMaterialNavigationApi::class)
+inline fun <reified T : NavRoute> NavGraphBuilder.bottomSheet(
     deepLinks: List<NavDeepLink> = listOf(),
-    dialogProperties: DialogProperties = DialogProperties(),
     noinline content: @Composable NavBackStackEntry.(T?) -> Unit,
 ) {
     val klass = T::class
 
     SncUtil.registerRoute(klass)
 
-    dialog(
+    bottomSheet(
         route = klass.route,
         arguments = listOf(SncUtil.namedNavArg),
         deepLinks = deepLinks,
-        dialogProperties = dialogProperties,
         content = { entry ->
-            val data = remember(this) { SncUtil.getDataOrNull(klass, entry) }
+            val data = remember(entry) { SncUtil.getDataOrNull(klass, entry) }
 
             content(entry, data)
         },

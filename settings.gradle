@@ -14,9 +14,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Safer Compose Navigation"
+rootProject.name = "Safer Navigation Compose"
 
 include(":core")
 include(":navigation-compose")
-include(":navigation-animation")
+include(":navigation-material")
 include(":sample")

@@ -1,5 +1,6 @@
 package com.github.uragiristereo.safer.compose.navigation.core
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.navigation.NavDeepLinkRequest
@@ -10,6 +11,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigator
 import androidx.navigation.navOptions
 
+@SuppressLint("RestrictedApi")
 fun NavHostController.navigate(
     route: NavRoute,
     navOptions: NavOptions? = null,
@@ -30,7 +32,9 @@ fun NavHostController.navigate(
         // When the data is too large it usually throws IllegalArgumentException "Navigation destination that matches request cannot be found"
         // So we're printing the error instead
 
-        Log.e("SaferComposeNavigation", e.message.toString())
+        if (SaferNavigationComposeConfig.isLoggingEnabled) {
+            Log.e("SaferComposeNavigation", e.message.toString())
+        }
     }
 }
 

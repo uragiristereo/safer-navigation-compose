@@ -6,11 +6,20 @@ plugins {
 }
 
 android {
-    namespace "com.github.uragiristereo.safer.compose.navigation.animation"
-    compileSdk 33
+    namespace "com.github.uragiristereo.safer.compose.navigation.material"
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -33,7 +42,7 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId = "com.github.uragiristereo.safer.compose.navigation"
-            artifactId = "navigation-animation"
+            artifactId = "navigation-material"
             version = libs.versions.library.get()
 
             afterEvaluate {
@@ -45,6 +54,6 @@ publishing {
 
 dependencies {
     api(project(":core"))
-    implementation(libs.compose.animation)
-    api(libs.accompanist.navigation.animation)
+    api(libs.accompanist.navigation.material)
+    implementation(libs.kotlinx.serialization.json)
 }

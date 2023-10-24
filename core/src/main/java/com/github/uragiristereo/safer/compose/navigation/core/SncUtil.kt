@@ -3,6 +3,9 @@ package com.github.uragiristereo.safer.compose.navigation.core
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -12,7 +15,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
-object Serializer {
+object SncUtil {
     private val navRoutes = mutableMapOf<String, PolymorphicModuleBuilder<NavRoute>.() -> Unit>()
     private var module: SerializersModule? = null
 
@@ -23,7 +26,7 @@ object Serializer {
         }
 
     inline fun <reified T : NavRoute> registerRoute(klass: KClass<T>) {
-        if (!Util.isClassAnObject(klass)) {
+        if (!isClassAnObject(klass)) {
             addPolymorphicType(name = klass.qualifiedName!!) {
                 subclass(klass, serializer())
             }
@@ -63,9 +66,50 @@ object Serializer {
 
             json.decodeFromString(decoded)
         } catch (e: IllegalArgumentException) {
-            Log.w("SaferComposeNavigation", e)
+            if (SaferNavigationComposeConfig.isLoggingEnabled) {
+                Log.w("SaferComposeNavigation", e)
+            }
 
             null
         }
+    }
+
+    inline fun <reified T : NavRoute> getDataOrNull(
+        route: KClass<T>,
+        entry: NavBackStackEntry,
+    ): T? {
+        val data = entry.arguments?.getString("snc-data")
+
+        return when {
+            isClassAnObject(route) -> getObjectInstance(route)
+
+            data == null -> {
+                val e = IllegalArgumentException("Expecting navigation route data for \"${route.route}\" but got null!")
+
+                if (SaferNavigationComposeConfig.isLoggingEnabled) {
+                    Log.d("SaferNavigationCompose", "${e.message}")
+                }
+
+                null
+            }
+
+            else -> decode(data)
+        }
+    }
+
+    fun isClassAnObject(klass: KClass<out NavRoute>): Boolean {
+        return klass.java.declaredFields.any {
+            it.type == klass.java && it.name == "INSTANCE"
+        }
+    }
+
+    inline fun <reified T : Any> getObjectInstance(klass: KClass<T>): T {
+        return klass.java.getDeclaredField("INSTANCE").get(null) as T
+    }
+
+    val namedNavArg = navArgument(name = "snc-data") {
+        type = NavType.StringType
+        nullable = true
+        defaultValue = null
     }
 }

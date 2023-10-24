@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace "com.github.uragiristereo.safer.compose.sample"
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.github.uragiristereo.safer.compose.sample"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -27,19 +27,24 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
+
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -50,8 +55,10 @@ android {
 dependencies {
     implementation(project(":navigation-compose"))
     
-    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.core)
     implementation(libs.bundles.androidx.compose)
-    implementation(libs.bundles.compose)
+    implementation(libs.bundles.compose.core)
     debugImplementation(libs.bundles.compose.debug)
+
+    implementation(libs.kotlinx.serialization.json)
 }
